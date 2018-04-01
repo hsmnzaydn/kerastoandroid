@@ -26,6 +26,10 @@ predictions = model.predict(X)
 tahmin=numpy.array([1,89,66,23,94,28.1,0.167,21]).reshape(1,8)
 print(model.predict_classes(tahmin))
 
+
+
+
+
 def export_model(saver, model, input_node_names, output_node_name,MODEL_NAME):
     tf.train.write_graph(K.get_session().graph_def, 'out', \
                          MODEL_NAME + '_graph.pbtxt')
@@ -52,8 +56,14 @@ def export_model(saver, model, input_node_names, output_node_name,MODEL_NAME):
 
     return
 
+
+
 X_train, X_test, y_train, y_test = train_test_split(X, Y)
 estimators = []
 estimator = KerasRegressor(build_fn=model, epochs=20, batch_size=50, verbose=2)
 
-export_model(tf.train.Saver(), estimator, ["dense_1_input"], "dense_3/Sigmoid","test")
+inputName=model.input.name[:-2]
+outPutName=model.output.name[:-2]
+
+export_model(tf.train.Saver(), estimator, [inputName], outPutName,"test")
+
